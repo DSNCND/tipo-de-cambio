@@ -1,0 +1,163 @@
+
+
+body
+{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    height: 120vh;
+}
+
+main
+{
+    width: 100%;
+    display: flex;
+    background:/*gray */ transparent;
+    padding: 4px 3px;
+}
+section
+{
+    margin: 3px;
+    padding: 11px;
+    width: 50%;
+    background: rgb(185, 183, 183);
+    border-radius: 5px;
+    border: 3px transparent 
+}
+
+form, ul
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input,li
+{
+    padding: 0;
+    margin:0;
+    width: 216px;
+    height: 30px;
+    border: none;
+    text-align: center;
+    outline: none;
+}
+
+li
+{
+  text-align:start;
+  height: auto;
+  padding: 6px;
+}
+
+#divisas li:first-child
+{
+    width: 90%;
+    color: #554f4fe5;
+    font-weight: bold;
+    font-size: 22px;
+    font-family: 'Courier New', Courier, monospace;
+    padding-top: 35px;
+    margin-bottom: 2px;
+    padding-bottom: 2px;
+    border-bottom: 2px solid #26a69a;
+    
+}
+
+label
+{
+    padding: 0 10px ;
+    color: #554f4fe5;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+p
+{
+    
+    background: #b9b7b7;
+    width: 100%;
+    padding:0;
+    margin:2px 0px;
+    border: 2px rgba(red, green, blue, 0.1);
+
+}
+
+
+
+.radio
+{
+    width: 180px;
+    height: 40px;
+    line-height: 40px;
+}
+
+.orden
+{
+    display: flex;
+}
+
+body, .orden {
+  background: #0A212A;
+  margin:0px;
+  /*overflow:hidden;*/
+  animation-fill-mode: both;
+  animation:color-loop 18s infinite;
+}
+
+
+@keyframes color-loop {
+  0% {
+    background: #26a69a;
+  }
+  
+  10% {
+    background: #b9b7b7;
+  }
+  
+  20% {
+    background: #26a69a;
+  }
+  
+  30% {
+    background: #b9b7b7;
+  }
+  40% {
+    background: #26a69a;
+  }
+  50% {
+    background: #b9b7b7;
+  }
+  
+  60% {
+    background: #26a69a;
+  }
+
+  70% {
+    background: #b9b7b7;
+  }
+   80% {
+    background: #26a69a;
+  }
+   90% {
+    background: #b9b7b7;
+  }
+   100% {
+    background: #26a69a;
+  }
+}
+
+
+select, option
+{
+  cursor:pointer;
+  height: auto;
+  width: 222px;
+  display: inherit;
+}
+
+
+.options
+{
+  display: flex;
+}

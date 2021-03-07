@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+    <link rel="stylesheet" href="estilosdivisas.css">
+    <link rel="stylesheet" href="breackpoints.css">
+    <title>Document</title>
+</head>
+<body>
+    
+    <main>
+        <section>
+            <form action="#" method="GET">
+                <h1 class="waves-effect waves-light">Divisas</h1>
+                
+                <input id="fecha" name="fecha" type="date" ></input>
+                <label for="fecha">Fecha</label>
+                <br>
+                <div class="input-field col s12 options btn-large waves-effect waves-light">
+                    <select id="option">
+                        
+                    </select>
+                    
+                </div>
+                <label for="option">Divisa</label>
+                <br>
+                
+                
+                <input id="divisa" type="search" required name="divisa" type="text" placeholder="EUR">
+                
+
+            </input>
+            <label  for="divisa">Divisa</label>
+            <br>
+            <input class="btn-large waves-effect waves-light" type='button' id="botonConsulta" value="CONSULTAR"></input>
+        </form>
+            
+        <ul id='divisas'>
+            
+        </ul>
+        
+        
+    </section>
+            
+    <section>
+        <form action="#">
+                <h2 class="waves-effect waves-light" >Ordenar</h2>
+                <div class="orden">
+                <p>
+                    <label class="waves-effect waves-light radio">
+                        <input name="ordenar" type="radio" id="alfa" checked />
+                        <span >DIVISA</span>
+                    </label>
+                </p>
+                <p>
+                    <label class="waves-effect waves-light radio">
+                        <input name="ordenar" type="radio" id="valor" />
+                        <span>ASCENDENTE</span>
+                    </label>
+                </p>
+                 <p>
+                     <label class="waves-effect waves-light radio">
+                         <input name="ordenar" type="radio" id="descendente" />
+                         <span>DESCENDENTE</span>
+                        </label>
+                 </p>
+                </div>
+                
+            </form>
+            <ul id="divisasOrdenadas">
+                
+            </ul>
+            
+        </section>
+    </main>
+    
+    
+    <script src="sort.js"></script>
+    <script>
+
+        ////////////////////////////
+    
+        let datos=0;
+        let divisa = document.querySelector('#divisa')
+        let enviar = document.querySelector('#botonConsulta')
+        let opcion = document.querySelector('#option')
+        let checkAlfa = document.querySelector('#alfa')
+        let checkValor = document.querySelector('#valor')
+        let checkValorDescendente = document.querySelector('#descendente')
+        
+            const tipo = 
+            [   "Seleccione una divisa",
+                "USD",
+                "JPY",
+                "BGN",
+                "CZK",
+                "DKK",
+                "GBP",
+                "HUF",
+                "PLN",
+                "RON",
+                "SEK",
+                "CHF",
+                "ISK",
+                "NOK",
+                "HRK",
+                "RUB",
+                "TRY",
+                "AUD",
+                "BRL",
+                "CAD",
+                "CNY",
+                "HKD",
+                "IDR",
+                "ILS",
+                "INR",
+                "KRW",
+                "MXN",
+                "MYR",
+                "NZD",
+                "PHP",
+                "SGD",
+                "THB",
+                "ZAR",
+            ]
+            
+            const moneda = 
+            [   "Seleccione una divisa",
+                "US dollar",
+                "Japanese yen",
+                "Bulgarian lev",
+                "Czech koruna",
+                "Danish krone",
+                "Pound sterling",
+                "Hungarian forint",
+                "Polish zloty",
+                "Romanian leu",
+                "Swedish krona",
+                "Swiss franc",
+                "Icelandic krona",
+                "Norwegian krone",
+                "Croatian kuna",
+                "Russian rouble",
+                "Turkish lira",
+                "Australian dollar",
+                "Brazilian real",
+                "Canadian dollar",
+                "Chinese yuan renminbi",
+                "Hong Kong dollar",
+                "Indonesian rupiah",
+                "Israeli shekel",
+                "Indian rupee",
+                "South Korean won",
+                "Mexican peso",
+                "Malaysian ringgit",
+                "New Zealand dollar",
+                "Philippine peso",
+                "Singapore dollar",
+                "Thai baht",
+                "South African rand",
+                ]
+    
+    function cargarSelect()
+    {
+        const select = document.querySelector("#option")
+        moneda.forEach(e=>
+        {
+            let option = document.createElement('option');
+            option.textContent=e
+            select.appendChild(option);
+        });
+        let options = select.querySelectorAll("option")
+        console.log(options)
+        let i=0;
+        options.forEach((e)=>
+        {
+            e.value=tipo[i];
+            console.log(e.value);
+            i++;
+        })
+    }
+        
+    cargarSelect()
+
+    function pegarHTML(donde, que)
+    {
+        let linode = document.createElement('li');
+        linode.innerText=que;
+        linode.style.listStyleType='none';
+        linode.classList.add("waves-effect");
+        linode.classList.add("waves-light");
+        document.querySelector(`${donde}`).appendChild(linode)
+    }
+
+    function cambio()
+    {
+        let fecha = document.querySelector("#fecha").value;
+        let base = document.querySelector("#divisa").value.toUpperCase();
+        let fechaApi = 'latest'
+        let baseApi = 'EUR'
+        if(fecha)
+        {
+            fechaApi=fecha;
+        }
+        
+        if(base)
+        {
+        baseApi = base;
+        }
+
+        fetch(`https://api.exchangeratesapi.io/${fechaApi}?base=${baseApi}`)
+        .then(data => data.json())
+        .then(data => {document.querySelector('#divisas').innerHTML="";return data})
+        .then(data => 
+        {
+            let encabezado = Object.keys(data);
+            pegarHTML('#divisas', `BASE - ${data.base} \r FECHA - ${data.date} \r \r`)
+            ;return data
+        })
+        .then(data => Object.keys(data.rates).forEach(divisa => {pegarHTML('#divisas',`${divisa} _ ${data.rates[divisa]}`); datos = data }))
+        
+    }
+    
+    
+
+
+    let ordenarNombre = function () 
+    {
+        if(datos)
+        {
+        document.querySelector('#divisasOrdenadas').innerHTML = '';
+        let claves = Object.keys(datos.rates).sort()
+        claves.forEach(e => {
+            console.log(e)
+            console.log("ordenadas :s")
+            pegarHTML('#divisasOrdenadas', `${e} - ${datos.rates[e]}`)
+        });
+        }
+    }
+
+    let ordenarValor = function()
+    {
+        if(datos)
+        {
+            document.querySelector('#divisasOrdenadas').innerHTML = '';
+            let ordenado = [];
+     
+            for(let key in datos.rates)
+            {
+                ordenado.push([key,datos.rates[key]]);
+            }
+            
+            ordenado.sort((a, b)=>
+            {
+                return (a[1]-b[1]);
+            });
+
+            console.log(ordenado)
+
+           
+            ordenado.forEach(e=>pegarHTML('#divisasOrdenadas', `${e[0]} - ${e[1]}`))
+
+        }
+    }
+    let ulSort;
+    let ordenarValorDescendente = function() 
+    {
+        if(!datos){return}
+        document.querySelector('#divisasOrdenadas').innerHTML = '';
+        let rates = datos.rates;
+        let array = Object.entries(rates)
+        array.sort((a,b)=>{return b[1]- a[1] })
+        array.forEach((e)=>pegarHTML(`#divisasOrdenadas`,`${e[0]} - ${e[1]}`))
+
+
+
+        ///////////////////////////////////////////////////
+                //let ulget = document.querySelector('#divisas').childNodes;
+        ulSort = document.querySelector('#divisasOrdenadas').childNodes;
+
+        ulSort[0].addEventListener('mousedown', 
+        function (e){console.log("mouse down :S") }, true);
+
+        
+        ulSort[1].addEventListener('mousedown',
+            function (e) { console.log("mouse down :S") }, {capture:true});
+
+        
+        ulSort[0].addEventListener('click',
+            function (e) { console.log("click :S") }, {capture:true});
+
+
+        ulSort[1].addEventListener('evento2',
+            function (e) { console.log("click :S") }, false);
+
+        document.querySelector('#divisasOrdenadas')
+
+
+        let evento = new Event('click')
+        let evento2= new Event('mousedown')
+        let evento3 = new Event('execMouseDown')
+        let evento4 = new Event('mousedown')
+        document.querySelector('#divisasOrdenadas').dispatchEvent(evento);
+        
+
+        document.querySelector('#divisasOrdenadas').dispatchEvent(evento2);
+        document.querySelector('#divisasOrdenadas').dispatchEvent(evento4);
+        document.querySelector('#divisasOrdenadas').dispatchEvent(new Event('evento3'));
+
+
+
+    }
+
+
+
+
+    opcion.addEventListener('change', (e)=>
+    {
+        divisa.value=e.currentTarget.value;
+        cambio();
+    })
+
+    enviar.addEventListener('click',cambio);
+    divisa.addEventListener('keydown',
+    (e)=>
+        {
+        console.log("test")
+        if(e.keyCode===13)
+         {
+            e.preventDefault();
+            cambio(); 
+         }
+        }
+    )
+    checkAlfa.addEventListener('click',ordenarNombre);
+    checkValor.addEventListener('click',ordenarValor);
+    checkValorDescendente.addEventListener('click',ordenarValorDescendente);
+    
+    //usar window.localstorage --> setitem con fecha (date ?) y tipo de divisa base  y data(averiguar como guardar data cruda raw) { fecha:'11-12-2020', divisa: 'EUR', data: {data}}
+    //usar anclas en la pagina para pasar de section cuando sea tamaño movil
+    </script>
+</body>
+</html>
