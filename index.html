@@ -217,7 +217,7 @@
         baseApi = base;
         }
         //es un plan free no soporta https - se usa http
-        fetch(`http://api.exchangeratesapi.io/v1/${fechaApi}&base=${baseApi}?access_key=10cf0bf9d92445dfd42425c035ba5e06`)
+        fetch(`https://api.exchangeratesapi.io/v1/${fechaApi}&base=${baseApi}?access_key=10cf0bf9d92445dfd42425c035ba5e06`)
         .then(data => data.json())
         .then(data => {document.querySelector('#divisas').innerHTML="";return data})
         .then(data => 
